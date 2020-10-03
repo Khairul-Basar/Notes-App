@@ -7,6 +7,9 @@
     "start": "node index",
     "dev": "nodemon index"
   },
+  "engines": {
+    "node": "12.16.1"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",

@@ -383,11 +383,12 @@ app.get('/user', (req, res) => {
 
 
 
+const PORT = process.env.PORT || 3001
 
 
 
 // Server Creation
-app.listen(3001, (req, res) => {
+app.listen(PORT, (req, res) => {
   console.log('server created port is 3001')
 })
 
