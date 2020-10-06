@@ -7,7 +7,7 @@ const Note = require('../models/notes')
 
 
 // ADD NOTE CONTROLLER
-module.exports.addNoteController = async (req, res) => {
+module.exports.addNoteController = async (req, res, next) => {
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -22,7 +22,7 @@ module.exports.addNoteController = async (req, res) => {
     await note.save()
     res.send(note)
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 
 }
@@ -30,7 +30,7 @@ module.exports.addNoteController = async (req, res) => {
 
 
 // GET SINGLE NOTE CONTROLLER
-module.exports.getNoteController = async (req, res) => {
+module.exports.getNoteController = async (req, res, next) => {
   const id = req.params.noteId
 
   const errors = validationResult(req)
@@ -43,7 +43,7 @@ module.exports.getNoteController = async (req, res) => {
     if (!note) return res.status(404).send("Note Not Found..!!")
     res.send(note)
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 
 }
@@ -51,13 +51,13 @@ module.exports.getNoteController = async (req, res) => {
 
 
 // GET ALL NOTES CONTROLLER
-module.exports.getNotesController = async (req, res) => {
+module.exports.getNotesController = async (req, res, next) => {
   try {
     const notes = await Note.find().populate('owner', 'firstName lastName')
     if (!notes) return res.status(404).send("Note Not Found..!!")
     res.send(notes)
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 }
 
@@ -65,7 +65,7 @@ module.exports.getNotesController = async (req, res) => {
 
 
 // UPDATE NOTE CONTROLLER
-module.exports.updateNoteController = async (req, res) => {
+module.exports.updateNoteController = async (req, res, next) => {
   const id = req.params.noteId
 
   const gotNoteInputkeys = Object.keys(req.body)
@@ -95,7 +95,7 @@ module.exports.updateNoteController = async (req, res) => {
     if (!note) return res.status(404).send('Note Not Found..!!')
     res.send(note)
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 
 
@@ -105,7 +105,7 @@ module.exports.updateNoteController = async (req, res) => {
 
 
 // DELETE NOTE CONTROLLER
-module.exports.deleteNoteController = async (req, res) => {
+module.exports.deleteNoteController = async (req, res, next) => {
   const id = req.params.noteId
 
   const errors = validationResult(req)
@@ -121,7 +121,7 @@ module.exports.deleteNoteController = async (req, res) => {
     if (!note) return res.status(404).send('Note Not Found..!!')
     res.send(note)
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 
 }

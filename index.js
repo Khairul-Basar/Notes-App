@@ -1,4 +1,6 @@
 const express = require('express')
+// Cross Origin Resource Sharing{cors}
+const cors = require('cors')
 
 const app = express()
 
@@ -9,6 +11,8 @@ const cookieParser = require('cookie-parser')
 const notesRoute = require('./routes/notesRoutes')
 const homeRoute = require('./routes/index')
 const userRoute = require('./routes/userRoutes')
+// Error Middleware
+const { error } = require('./middleware/error')
 
 
 
@@ -23,6 +27,10 @@ require('dotenv').config({
 app.use(express.json())
 
 app.use(cookieParser(process.env.COOKIES_SECRET_KEY))
+
+// enable Cors
+app.use(cors())
+
 
 // app.use(auth)
 
@@ -63,6 +71,7 @@ connectDB()
 app.use('/notes', notesRoute)
 app.use('/users', userRoute)
 app.use('/', homeRoute)
+app.use(error)
 
 // let notes = [
 //   {
