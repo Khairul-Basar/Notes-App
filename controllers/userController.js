@@ -9,7 +9,7 @@ const { validationResult } = require('express-validator')
 
 const bcrypt = require('bcryptjs')
 
-module.exports.addUserController = async (req, res) => {
+module.exports.addUserController = async (req, res, next) => {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
@@ -48,7 +48,7 @@ module.exports.addUserController = async (req, res) => {
     // })
 
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 
 
@@ -56,19 +56,19 @@ module.exports.addUserController = async (req, res) => {
 
 
 
-module.exports.getUsersController = async (req, res) => {
+module.exports.getUsersController = async (req, res, next) => {
   try {
     const users = await User.find({}, '-password')
     res.send(users)
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 
 }
 
 
 
-module.exports.getUserController = async (req, res) => {
+module.exports.getUserController = async (req, res, next) => {
   const id = req.user._id
 
   const errors = validationResult(req)
@@ -81,7 +81,7 @@ module.exports.getUserController = async (req, res) => {
     if (!user) return res.status(404).send("User Not Registered..!!")
     res.send(user)
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 
 
@@ -108,7 +108,7 @@ module.exports.getUserController = async (req, res) => {
 
 // }
 
-module.exports.loginController = async (req, res) => {
+module.exports.loginController = async (req, res, next) => {
   const { email, password } = req.body
   try {
     // Check Email
@@ -148,7 +148,7 @@ module.exports.loginController = async (req, res) => {
 
     res.send("Login Successfully..!!")
   } catch (err) {
-    res.status(500).send(err)
+    next(err)
   }
 
 }
